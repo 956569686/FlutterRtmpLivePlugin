@@ -31,7 +31,7 @@ class RtmpPushView extends StatefulWidget {
 
 class RtmpPushViewState extends State<RtmpPushView> {
   /// 唯一标识符，需要与PlatformView标识对应
-  static const String type = "plugins.huic.top/RtmpPush";
+  static const String type = "plugins.com.honggv/RtmpPush";
 
   @override
   Widget build(BuildContext context) {

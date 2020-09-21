@@ -53,7 +53,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
     /**
      * 全局标识
      */
-    public static final String SIGN = "plugins.huic.top/QiniucloudPush";
+    public static final String SIGN = "plugins.com.honggv/RtmpPush";
 
     /**
      * 本地预览内容

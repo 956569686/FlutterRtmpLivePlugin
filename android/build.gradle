@@ -1,4 +1,4 @@
-group 'con.honggv.flutter_rtmp_live_plugin'
+group 'com.honggv.flutter_rtmp_live_plugin'
 version '1.0'
 buildscript {
     repositories {
