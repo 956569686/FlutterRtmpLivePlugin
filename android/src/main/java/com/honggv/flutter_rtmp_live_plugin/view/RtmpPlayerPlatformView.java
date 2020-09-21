@@ -58,7 +58,7 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
     }
 
     /**
-     * 初始化组件，同时也初始化七牛云推流
+     * 初始化组件，同时也初始化rtmp云推流
      * 每个组件被实例化时调用
      */
     private RtmpPlayerPlatformView(Context context) {

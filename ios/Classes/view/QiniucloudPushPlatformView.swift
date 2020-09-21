@@ -1,7 +1,7 @@
 import PLRTCStreamingKit
 
 //  Created by 蒋具宏 on 2020/3/3.
-//  七牛云连麦推流视图工厂
+//  rtmp云连麦推流视图工厂
 public class QiniucloudPushPlatformViewFactory : NSObject,FlutterPlatformViewFactory{
     /**
      * 全局标识
@@ -46,7 +46,7 @@ public class QiniucloudPushPlatformViewFactory : NSObject,FlutterPlatformViewFac
     }
 }
 
-//  七牛云连麦推流视图
+//  rtmp云连麦推流视图
 public class QiniucloudPushPlatformView : NSObject,FlutterPlatformView,PLMediaStreamingSessionDelegate{
     /**
      * 监听器回调的方法名
@@ -64,7 +64,7 @@ public class QiniucloudPushPlatformView : NSObject,FlutterPlatformView,PLMediaSt
     private var frame : CGRect;
     
     /**
-     *  七牛云Session
+     *  rtmp云Session
      */
     private var session : PLMediaStreamingSession?;
     

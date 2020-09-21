@@ -1,5 +1,5 @@
 //  Created by 蒋具宏 on 2020/3/3.
-//  七牛云连麦播放视图工厂
+//  rtmp云连麦播放视图工厂
 public class QiniucloudConnectedPlayerPlatformViewFactory : NSObject,FlutterPlatformViewFactory{
     /**
      * 全局标识
@@ -33,7 +33,7 @@ public class QiniucloudConnectedPlayerPlatformViewFactory : NSObject,FlutterPlat
     }
 }
 
-//  七牛云连麦播放器视图
+//  rtmp云连麦播放器视图
 public class QiniucloudConnectedPlayerPlatformView : NSObject,FlutterPlatformView{
     /**
      *  窗体

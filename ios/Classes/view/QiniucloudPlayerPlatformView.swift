@@ -2,7 +2,7 @@ import PLPlayerKit
 import UIKit
 
 //  Created by 蒋具宏 on 2020/3/3.
-//  七牛云播放器视图工厂
+//  rtmp云播放器视图工厂
 public class QiniucloudPlayerPlatformViewFactory : NSObject,FlutterPlatformViewFactory{
     /**
      * 全局标识
@@ -46,7 +46,7 @@ public class QiniucloudPlayerPlatformViewFactory : NSObject,FlutterPlatformViewF
     }
 }
 
-//  七牛云播放器视图
+//  rtmp云播放器视图
 public class QiniucloudPlayerPlatformView : NSObject,FlutterPlatformView,PLPlayerDelegate{
     /**
      * 监听器回调的方法名

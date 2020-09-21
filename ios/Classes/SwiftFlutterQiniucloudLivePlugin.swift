@@ -5,7 +5,7 @@ import PLRTCStreamingKit
 
 public class SwiftFlutterQiniucloudLivePlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    // 初始化七牛云推流环境
+    // 初始化rtmp云推流环境
     PLStreamingEnv.initEnv();
     
     let channel = FlutterMethodChannel(name: "flutter_qiniucloud_live_plugin", binaryMessenger: registrar.messenger())

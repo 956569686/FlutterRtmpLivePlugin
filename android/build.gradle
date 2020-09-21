@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     // json序列化
     implementation 'com.alibaba:fastjson:1.2.55'
-    // 七牛云播放SDK
+    // rtmp播放SDK
     implementation files('libs/pldroid-player-2.1.9.jar')
     implementation files('libs/ksylive.jar')
 }

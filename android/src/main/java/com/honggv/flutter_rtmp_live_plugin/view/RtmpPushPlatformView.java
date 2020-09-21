@@ -80,7 +80,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
     }
 
     /**
-     * 初始化组件，同时也初始化七牛云推流
+     * 初始化组件，同时也初始化rtmp云推流
      * 每个组件被实例化时调用
      */
     private RtmpPushPlatformView(Context context) {
