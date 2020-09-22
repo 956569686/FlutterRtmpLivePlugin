@@ -55,12 +55,13 @@ class RtmpPushViewState extends State<RtmpPushView> {
         creationParamsCodec: paramsCodec,
       );
     } else if (Platform.isIOS) {
-      return UiKitView(
-        viewType: type,
-        creationParams: params,
-        onPlatformViewCreated: _onPlatformViewCreated,
-        creationParamsCodec: paramsCodec,
-      );
+      return Text("暂不支持的IOS平台");
+//      return UiKitView(
+//        viewType: type,
+//        creationParams: params,
+//        onPlatformViewCreated: _onPlatformViewCreated,
+//        creationParamsCodec: paramsCodec,
+//      );
     } else {
       return Text("不支持的平台");
     }

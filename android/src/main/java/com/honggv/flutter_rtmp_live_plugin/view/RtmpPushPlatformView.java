@@ -12,6 +12,8 @@ import android.view.View;
 import androidx.core.app.ActivityCompat;
 
 import com.alibaba.fastjson.JSON;
+import com.honggv.flutter_rtmp_live_plugin.entity.StreamingProfile;
+import com.honggv.flutter_rtmp_live_plugin.util.CommonUtil;
 import com.ksyun.media.streamer.capture.CameraCapture;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
@@ -155,16 +157,16 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         Map<String, Object> cameraSettingMap = JSON.parseObject(cameraSettingStr);
         // 推流参数(仅主播)
         String streamingProfileStr = (String) params.get("streamingProfile");
-
-
+        StreamingProfile streamingProfile = JSON.parseObject(streamingProfileStr, StreamingProfile.class);
+        Log.e(TAG, "推流参数(仅主播): "+streamingProfile.getPublishUrl());
         // 初始化视图
         view = new CameraPreviewFrameView(context);
         view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         mStreamer = new KSYStreamer(context);
 
-        mConfig = getConfig("rtmp://xl.rtmp.honggv.cn:19235/10000026/1307864768169742338");
+        mConfig = getConfig(streamingProfile.getPublishUrl());
 
-        mStreamer.setUrl("rtmp://xl.rtmp.honggv.cn:19235/10000026/1307864768169742338");
+        mStreamer.setUrl(streamingProfile.getPublishUrl());
 
         // 设置推流分辨率
         mStreamer.setPreviewResolution(mConfig.mTargetResolution);
