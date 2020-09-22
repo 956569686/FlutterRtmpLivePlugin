@@ -115,6 +115,16 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
             case "switchCamera":
                 mStreamer.switchCamera();
                 break;
+            case "openBeauty":
+                // 设置美颜滤镜，关于美颜滤镜的具体说明请参见专题说明以及完整版demo
+                mStreamer.getImgTexFilterMgt().setFilter(mStreamer.getGLRender(),
+                        ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO3);
+                break;
+            case "closeBeauty":
+                // 设置美颜滤镜，关于美颜滤镜的具体说明请参见专题说明以及完整版demo
+                mStreamer.getImgTexFilterMgt().setFilter(mStreamer.getGLRender(),
+                        ImgTexFilterMgt.KSY_FILTER_BEAUTY_DISABLE);
+                break;
 //            case "mute":
 //                this.mute(call, result);
 //                break;

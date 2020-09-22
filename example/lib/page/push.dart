@@ -190,6 +190,18 @@ class PushPageState extends State<PushPage> {
     });
   }
 
+  /// 开启美颜
+  openBeauty() async {
+    await controller.openBeauty();
+    this.setState(() => info = "开启美颜");
+  }
+
+  /// 关闭美颜
+  closeBeauty() async {
+    await controller.closeBeauty();
+    this.setState(() => info = "关闭美颜");
+  }
+
   /// 销毁
   onDestroy() async {
     await controller.destroy();

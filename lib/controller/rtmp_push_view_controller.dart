@@ -46,6 +46,17 @@ class RtmpPushViewController {
     return await _channel.invokeMethod('pause');
   }
 
+  /// 开启美颜
+  Future<void> openBeauty() async {
+    return await _channel.invokeMethod('openBeauty');
+  }
+
+  /// 关闭美颜
+  Future<void> closeBeauty() async {
+    return await _channel.invokeMethod('closeBeauty');
+  }
+
+
   /// 释放不紧要资源。
   Future<void> destroy() async {
     return await _channel.invokeMethod('destroy');
