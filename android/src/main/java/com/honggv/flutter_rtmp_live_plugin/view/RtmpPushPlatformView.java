@@ -95,15 +95,19 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         switch (call.method) {
             case "resume":
                 handleOnResume();
+                Log.e(TAG, "resume 预览");
                 break;
             case "pause":
                 handleOnPause();
+                Log.e(TAG, "pause 暂停");
                 break;
             case "startStreaming":
                 mStreamer.startStream();
+                Log.e(TAG, "startStreaming 开始推流");
                 break;
             case "stopStreaming":
                 mStreamer.stopStream();
+                Log.e(TAG, "stopStreaming 停止推流");
                 break;
             case "destroy":
                 mStreamer.stopRecord();
@@ -111,19 +115,23 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
                 mStreamer.stopBgm();
                 mStreamer.stopImageCapture();
                 mStreamer.stopStream();
+                Log.e(TAG, "destroy mStreamer销毁");
                 break;
             case "switchCamera":
                 mStreamer.switchCamera();
+                Log.e(TAG, "switchCamera 切换摄像头");
                 break;
             case "openBeauty":
                 // 设置美颜滤镜，关于美颜滤镜的具体说明请参见专题说明以及完整版demo
                 mStreamer.getImgTexFilterMgt().setFilter(mStreamer.getGLRender(),
                         ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO3);
+                Log.e(TAG, "openBeauty 开启美颜");
                 break;
             case "closeBeauty":
                 // 设置美颜滤镜，关于美颜滤镜的具体说明请参见专题说明以及完整版demo
                 mStreamer.getImgTexFilterMgt().setFilter(mStreamer.getGLRender(),
                         ImgTexFilterMgt.KSY_FILTER_BEAUTY_DISABLE);
+                Log.e(TAG, "closeBeauty 关闭美颜");
                 break;
 //            case "mute":
 //                this.mute(call, result);

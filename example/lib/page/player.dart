@@ -194,7 +194,7 @@ class PlayerPageState extends State<PlayerPage> {
   onStart() async {
     await controller.start(
       url:
-          "rtmp://pili-live-rtmp.tianshitaiyuan.com/zuqulive/test",
+          "rtmp://xl.rtmp.honggv.cn:19235/10000026/1307864768169742338",
     );
   }
 
