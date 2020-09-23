@@ -223,7 +223,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         // 设置预览View
         mStreamer.setDisplayPreview(view);
 
-        mStreamer.setPreviewResolution(720,1280);
+//        mStreamer.setPreviewResolution(720,1280);
 
         // 设置回调处理函数
         mStreamer.setOnInfoListener(mOnInfoListener);
