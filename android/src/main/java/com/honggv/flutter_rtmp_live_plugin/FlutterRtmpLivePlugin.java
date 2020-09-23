@@ -16,7 +16,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 import com.honggv.flutter_rtmp_live_plugin.view.RtmpPushPlatformView;
-import com.honggv.flutter_rtmp_live_plugin.view.RtmpPlayerPlatformView;
+//import com.honggv.flutter_rtmp_live_plugin.view.RtmpPlayerPlatformView;
 
 /**
  * FlutterRtmpLivePlugin
@@ -36,7 +36,7 @@ public class FlutterRtmpLivePlugin implements FlutterPlugin, MethodCallHandler {
     private FlutterRtmpLivePlugin(BinaryMessenger messenger, Context context, MethodChannel channel, PlatformViewRegistry registry) {
         this.context = context;
         // 注册View
-        registry.registerViewFactory(RtmpPlayerPlatformView.SIGN, new RtmpPlayerPlatformView(context, messenger));
+//        registry.registerViewFactory(RtmpPlayerPlatformView.SIGN, new RtmpPlayerPlatformView(context, messenger));
         registry.registerViewFactory(RtmpPushPlatformView.SIGN, new RtmpPushPlatformView(context, messenger));
     }
 
