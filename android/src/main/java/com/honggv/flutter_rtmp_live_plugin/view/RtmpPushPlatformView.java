@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -69,6 +70,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
      */
     private KSYStreamer mStreamer;
 
+    protected Handler mMainHandler;
     protected String mBgImagePath = "assets://bg.jpg";
     protected boolean mHWEncoderUnsupported;
     protected boolean mSWEncoderUnsupported;
@@ -118,6 +120,11 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
                 mStreamer.stopImageCapture();
                 mStreamer.stopStream();
                 Log.e(TAG, "destroy mStreamer销毁");
+                // 清理相关资源
+                if (mMainHandler != null) {
+                    mMainHandler.removeCallbacksAndMessages(null);
+                    mMainHandler = null;
+                }
                 break;
             case "switchCamera":
                 mStreamer.switchCamera();
@@ -183,6 +190,8 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         view = new CameraPreviewFrameView(context);
         view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         mStreamer = new KSYStreamer(context);
+
+        mMainHandler = new Handler();
 
         mConfig = getConfig(streamingProfile.getPublishUrl());
 
@@ -377,9 +386,20 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
             case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNKNOWN:
                 handleEncodeError();
             default:
-//                reStreaming(what);
+                reStreaming(what);
                 break;
         }
+    }
+
+    protected void reStreaming(int err) {
+        mStreamer.stopStream();
+        mMainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mStreamer.startStream();
+                Log.e(TAG, "直播重连");
+            }
+        }, 1500);
     }
 
     protected void handleEncodeError() {
