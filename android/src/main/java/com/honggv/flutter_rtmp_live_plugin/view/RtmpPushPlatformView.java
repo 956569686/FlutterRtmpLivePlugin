@@ -15,9 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.honggv.flutter_rtmp_live_plugin.entity.StreamingProfile;
 import com.honggv.flutter_rtmp_live_plugin.util.CommonUtil;
 import com.ksyun.media.streamer.capture.CameraCapture;
+import com.ksyun.media.streamer.encoder.Encoder;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterMgt;
+import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
@@ -186,9 +188,12 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
 
         mStreamer.setUrl(streamingProfile.getPublishUrl());
 
+        mStreamer.setVideoCodecId(AVConst.CODEC_ID_AVC);
+
         // 设置推流分辨率
         mStreamer.setPreviewResolution(mConfig.mTargetResolution);
         mStreamer.setTargetResolution(mConfig.mTargetResolution);
+
 
         // 设置编码方式（硬编、软编）
         mStreamer.setEncodeMethod(mConfig.mEncodeMethod);
