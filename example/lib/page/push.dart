@@ -309,7 +309,7 @@ class PushPageState extends State<PushPage> {
                       faceBeauty: faceBeautySettingEntity),
                   streamingProfile: StreamingProfileEntity(
                     publishUrl:
-                        "rtmp://xl.rtmp.honggv.cn:19235/10000026/1307864768169742338",
+                        "rtmp://192.168.10.10:1935/10000005/1309107313331691522",
                   ),
                   onViewCreated: onViewCreated,
                 ),

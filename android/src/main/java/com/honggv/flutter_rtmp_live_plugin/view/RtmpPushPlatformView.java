@@ -125,6 +125,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
                     mMainHandler.removeCallbacksAndMessages(null);
                     mMainHandler = null;
                 }
+                mStreamer.release();
                 break;
             case "switchCamera":
                 mStreamer.switchCamera();
