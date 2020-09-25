@@ -278,7 +278,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         // orientation
 
         // encode method ENCODE_METHOD_HARDWARE
-        mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
+        mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE_COMPAT;
 
         mConfig.mAutoStart = true;
         mConfig.mShowDebugInfo = false;
