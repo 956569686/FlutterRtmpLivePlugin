@@ -1,8 +1,17 @@
-# rtmp云直播云播放端
--keep class com.pili.pldroid.player.** { *; }
--keep class com.qiniu.qplayer.mediaEngine.MediaPlayer{*;}
-# rtmp云连麦SDK v2
--keep class com.youme.** {*;}
--keep class org.webrtc.** {*;}
--keep class com.qiniu.android.dns.** {*;}
--keep class com.qiniu.pili.droid.streaming.** {*;}
+-dontskipnonpubliclibraryclassmembers
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+-ignorewarnings
+-verbose
+-dontoptimize
+-dontwarn
+
+-keep class com.ksyun.** {
+  *;
+}
+
+-keep class com.ksy.statlibrary.** {
+  *;
+}
