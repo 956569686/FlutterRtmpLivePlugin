@@ -34,6 +34,8 @@ import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 
 import com.honggv.flutter_rtmp_live_plugin.widget.CameraPreviewFrameView;
+import com.ksyun.media.streamer.util.device.DeviceInfo;
+import com.ksyun.media.streamer.util.device.DeviceInfoTools;
 
 /**
  * 推流视图
@@ -278,12 +280,26 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         // orientation
 
         // encode method ENCODE_METHOD_HARDWARE
-        mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE_COMPAT;
+        if (isHw264EncoderSupported()) {
+            mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
+        } else {
+            mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
+        }
+//        mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE_COMPAT;
 
         mConfig.mAutoStart = true;
         mConfig.mShowDebugInfo = false;
 
         return mConfig;
+    }
+
+    protected boolean isHw264EncoderSupported() {
+        DeviceInfo deviceInfo = DeviceInfoTools.getInstance().getDeviceInfo();
+        if (deviceInfo != null) {
+            Log.i(TAG, "deviceInfo:" + deviceInfo.printDeviceInfo());
+            return deviceInfo.encode_h264 == DeviceInfo.ENCODE_HW_SUPPORT;
+        }
+        return false;
     }
 
     protected void handleOnResume() {

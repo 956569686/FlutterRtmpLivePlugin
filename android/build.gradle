@@ -19,22 +19,18 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
-
     defaultConfig {
         minSdkVersion 18
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        // library 混淆 -> 随 library 引用，自动添加到 apk 打包混淆
-        consumerProguardFiles 'consumer-proguard-rules.txt'
-
-        ndk {
-            abiFilters "armeabi","arm64-v8a"// "armeabi-v7a",//,//, "x86", "x86_64"
-        }
-
-        sourceSets {
-            main {
-                jniLibs.srcDir 'libs'
-            }
+        //consumerProguardFiles 'consumer-proguard-rules.txt'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            //开启删除无用的资源
+            shrinkResources false
+//            useProguard true
         }
     }
     lintOptions {
