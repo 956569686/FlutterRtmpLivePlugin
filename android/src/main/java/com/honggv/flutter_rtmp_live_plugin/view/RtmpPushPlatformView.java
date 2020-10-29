@@ -206,7 +206,7 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         mStreamer.setPreviewResolution(mConfig.mTargetResolution);
         mStreamer.setTargetResolution(mConfig.mTargetResolution);
 
-
+        mStreamer.setAudioChannels(2);
         // 设置编码方式（硬编、软编）
         mStreamer.setEncodeMethod(mConfig.mEncodeMethod);
         // 硬编模式下默认使用高性能模式(high profile)
