@@ -1,212 +1,212 @@
-//package com.honggv.flutter_rtmp_live_plugin.view;
-//
-//
-//import android.content.Context;
-//import android.view.View;
-//
-//import com.honggv.flutter_rtmp_live_plugin.listener.RtmpPlayerListener;
-//import com.honggv.flutter_rtmp_live_plugin.util.CommonUtil;
-//import com.honggv.flutter_rtmp_live_plugin.widget.MediaController;
-//import com.pili.pldroid.player.widget.PLVideoView;
-//
-//import java.util.Map;
-//
-//import io.flutter.plugin.common.BinaryMessenger;
-//import io.flutter.plugin.common.MethodCall;
-//import io.flutter.plugin.common.MethodChannel;
-//import io.flutter.plugin.common.StandardMessageCodec;
-//import io.flutter.plugin.platform.PlatformView;
-//import io.flutter.plugin.platform.PlatformViewFactory;
-//
-///**
-// * rtmp播放器视图
-// */
-//public class RtmpPlayerPlatformView extends PlatformViewFactory implements PlatformView, MethodChannel.MethodCallHandler {
-//
-//    /**
-//     * 日志标签
-//     */
-//    private static final String TAG = RtmpPlayerPlatformView.class.getName();
-//
-//    /**
-//     * 全局上下文
-//     */
-//    private Context context;
-//
-//    /**
-//     * 消息器
-//     */
-//    private BinaryMessenger messenger;
-//
-//    /**
-//     * 全局标识
-//     */
-//    public static final String SIGN = "plugins.huic.top/QiniucloudPlayer";
-//
-//    /**
-//     * 播放器
-//     */
-//    private PLVideoView view;
-//
-//    /**
-//     * 初始化视图工厂，注册视图时调用
-//     */
-//    public RtmpPlayerPlatformView(Context context, BinaryMessenger messenger) {
-//        super(StandardMessageCodec.INSTANCE);
-//        this.context = context;
-//        this.messenger = messenger;
-//    }
-//
-//    /**
-//     * 初始化组件，同时也初始化rtmp云推流
-//     * 每个组件被实例化时调用
-//     */
-//    private RtmpPlayerPlatformView(Context context) {
-//        super(StandardMessageCodec.INSTANCE);
-//        this.context = context;
-//    }
-//
-//    @Override
-//    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
-//        switch (call.method) {
-//            case "setDisplayAspectRatio":
-//                this.setDisplayAspectRatio(call, result);
-//                break;
-//            case "start":
-//                this.start(call, result);
-//                break;
-//            case "pause":
-//                this.pause(call, result);
-//                break;
-//            case "stopPlayback":
-//                this.stopPlayback(call, result);
-//                break;
-//            case "getRtmpVideoTimestamp":
-//                this.getRtmpVideoTimestamp(call, result);
-//                break;
-//            case "getRtmpAudioTimestamp":
-//                this.getRtmpAudioTimestamp(call, result);
-//                break;
-//            case "setBufferingEnabled":
-//                this.setBufferingEnabled(call, result);
-//                break;
-//            case "getHttpBufferSize":
-//                this.getHttpBufferSize(call, result);
-//                break;
-//            default:
-//                result.notImplemented();
-//        }
-//    }
-//
-//    @Override
-//    public PlatformView create(Context context, int viewId, Object args) {
-//        Map<String, Object> params = (Map<String, Object>) args;
-//        RtmpPlayerPlatformView view = new RtmpPlayerPlatformView(context);
-//        // 绑定方法监听器
-//        MethodChannel methodChannel = new MethodChannel(messenger, SIGN + "_" + viewId);
-//        methodChannel.setMethodCallHandler(view);
-//        // 初始化
-//        view.init(params, methodChannel);
-//        return view;
-//    }
-//
-//    @Override
-//    public void dispose() {
-//
-//    }
-//
-//    @Override
-//    public View getView() {
-//        return view;
-//    }
-//
-//    /**
-//     * 初始化
-//     *
-//     * @param params        参数
-//     * @param methodChannel 方法通道
-//     */
-//    private void init(Map<String, Object> params, MethodChannel methodChannel) {
-//        // 初始化视图
-//        view = new PLVideoView(context);
-//        view.setMediaController(new MediaController(context));
-//        if (params.get("url") != null) {
-//            view.setVideoPath(params.get("url").toString());
-//        }
-//
-//        // 监听器
-//        RtmpPlayerListener listener = new RtmpPlayerListener(context, methodChannel);
-//        view.setOnPreparedListener(listener);
-//        view.setOnInfoListener(listener);
-//        view.setOnCompletionListener(listener);
-//        view.setOnVideoSizeChangedListener(listener);
-//        view.setOnErrorListener(listener);
-//    }
-//
-//    /**
-//     * 设置画面预览模式
-//     */
-//    private void setDisplayAspectRatio(MethodCall call, MethodChannel.Result result) {
-//        int mode = CommonUtil.getParam(call, result, "mode");
-//        view.setDisplayAspectRatio(mode);
-//        result.success(null);
-//    }
-//
-//    /**
-//     * 播放
-//     */
-//    private void start(MethodCall call, MethodChannel.Result result) {
-//        String url = call.argument("url");
-//        if (url != null) {
-//            view.setVideoPath(url);
-//        }
-//        view.start();
-//        result.success(null);
-//    }
-//
-//    /**
-//     * 暂停
-//     */
-//    private void pause(MethodCall call, MethodChannel.Result result) {
-//        view.pause();
-//        result.success(null);
-//    }
-//
-//    /**
-//     * 停止播放
-//     */
-//    private void stopPlayback(MethodCall call, MethodChannel.Result result) {
-//        view.stopPlayback();
-//        result.success(null);
-//    }
-//
-//    /**
-//     * 在RTMP消息中获取视频时间戳
-//     */
-//    private void getRtmpVideoTimestamp(MethodCall call, MethodChannel.Result result) {
-//        result.success(view.getRtmpVideoTimestamp());
-//    }
-//
-//    /**
-//     * 在RTMP消息中获取音频时间戳
-//     */
-//    private void getRtmpAudioTimestamp(MethodCall call, MethodChannel.Result result) {
-//        result.success(view.getRtmpAudioTimestamp());
-//    }
-//
-//    /**
-//     * 暂停/恢复播放器的预缓冲
-//     */
-//    private void setBufferingEnabled(MethodCall call, MethodChannel.Result result) {
-//        boolean enabled = CommonUtil.getParam(call, result, "enabled");
-//        view.setBufferingEnabled(enabled);
-//        result.success(null);
-//    }
-//
-//    /**
-//     * 获取已经缓冲的长度
-//     */
-//    private void getHttpBufferSize(MethodCall call, MethodChannel.Result result) {
-//        result.success(view.getHttpBufferSize().longValue());
-//    }
-//}
+package com.honggv.flutter_rtmp_live_plugin.view;
+
+
+import android.content.Context;
+import android.view.View;
+
+import com.honggv.flutter_rtmp_live_plugin.listener.RtmpPlayerListener;
+import com.honggv.flutter_rtmp_live_plugin.util.CommonUtil;
+import com.honggv.flutter_rtmp_live_plugin.widget.MediaController;
+import com.pili.pldroid.player.widget.PLVideoView;
+
+import java.util.Map;
+
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.StandardMessageCodec;
+import io.flutter.plugin.platform.PlatformView;
+import io.flutter.plugin.platform.PlatformViewFactory;
+
+/**
+ * rtmp播放器视图
+ */
+public class RtmpPlayerPlatformView extends PlatformViewFactory implements PlatformView, MethodChannel.MethodCallHandler {
+
+    /**
+     * 日志标签
+     */
+    private static final String TAG = RtmpPlayerPlatformView.class.getName();
+
+    /**
+     * 全局上下文
+     */
+    private Context context;
+
+    /**
+     * 消息器
+     */
+    private BinaryMessenger messenger;
+
+    /**
+     * 全局标识
+     */
+    public static final String SIGN = "plugins.com.honggv/RtmpPlay";
+
+    /**
+     * 播放器
+     */
+    private PLVideoView view;
+
+    /**
+     * 初始化视图工厂，注册视图时调用
+     */
+    public RtmpPlayerPlatformView(Context context, BinaryMessenger messenger) {
+        super(StandardMessageCodec.INSTANCE);
+        this.context = context;
+        this.messenger = messenger;
+    }
+
+    /**
+     * 初始化组件，同时也初始化rtmp云推流
+     * 每个组件被实例化时调用
+     */
+    private RtmpPlayerPlatformView(Context context) {
+        super(StandardMessageCodec.INSTANCE);
+        this.context = context;
+    }
+
+    @Override
+    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+        switch (call.method) {
+            case "setDisplayAspectRatio":
+                this.setDisplayAspectRatio(call, result);
+                break;
+            case "start":
+                this.start(call, result);
+                break;
+            case "pause":
+                this.pause(call, result);
+                break;
+            case "stopPlayback":
+                this.stopPlayback(call, result);
+                break;
+            case "getRtmpVideoTimestamp":
+                this.getRtmpVideoTimestamp(call, result);
+                break;
+            case "getRtmpAudioTimestamp":
+                this.getRtmpAudioTimestamp(call, result);
+                break;
+            case "setBufferingEnabled":
+                this.setBufferingEnabled(call, result);
+                break;
+            case "getHttpBufferSize":
+                this.getHttpBufferSize(call, result);
+                break;
+            default:
+                result.notImplemented();
+        }
+    }
+
+    @Override
+    public PlatformView create(Context context, int viewId, Object args) {
+        Map<String, Object> params = (Map<String, Object>) args;
+        RtmpPlayerPlatformView view = new RtmpPlayerPlatformView(context);
+        // 绑定方法监听器
+        MethodChannel methodChannel = new MethodChannel(messenger, SIGN + "_" + viewId);
+        methodChannel.setMethodCallHandler(view);
+        // 初始化
+        view.init(params, methodChannel);
+        return view;
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public View getView() {
+        return view;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param params        参数
+     * @param methodChannel 方法通道
+     */
+    private void init(Map<String, Object> params, MethodChannel methodChannel) {
+        // 初始化视图
+        view = new PLVideoView(context);
+        view.setMediaController(new MediaController(context));
+        if (params.get("url") != null) {
+            view.setVideoPath(params.get("url").toString());
+        }
+
+        // 监听器
+        RtmpPlayerListener listener = new RtmpPlayerListener(context, methodChannel);
+        view.setOnPreparedListener(listener);
+        view.setOnInfoListener(listener);
+        view.setOnCompletionListener(listener);
+        view.setOnVideoSizeChangedListener(listener);
+        view.setOnErrorListener(listener);
+    }
+
+    /**
+     * 设置画面预览模式
+     */
+    private void setDisplayAspectRatio(MethodCall call, MethodChannel.Result result) {
+        int mode = CommonUtil.getParam(call, result, "mode");
+        view.setDisplayAspectRatio(mode);
+        result.success(null);
+    }
+
+    /**
+     * 播放
+     */
+    private void start(MethodCall call, MethodChannel.Result result) {
+        String url = call.argument("url");
+        if (url != null) {
+            view.setVideoPath(url);
+        }
+        view.start();
+        result.success(null);
+    }
+
+    /**
+     * 暂停
+     */
+    private void pause(MethodCall call, MethodChannel.Result result) {
+        view.pause();
+        result.success(null);
+    }
+
+    /**
+     * 停止播放
+     */
+    private void stopPlayback(MethodCall call, MethodChannel.Result result) {
+        view.stopPlayback();
+        result.success(null);
+    }
+
+    /**
+     * 在RTMP消息中获取视频时间戳
+     */
+    private void getRtmpVideoTimestamp(MethodCall call, MethodChannel.Result result) {
+        result.success(view.getRtmpVideoTimestamp());
+    }
+
+    /**
+     * 在RTMP消息中获取音频时间戳
+     */
+    private void getRtmpAudioTimestamp(MethodCall call, MethodChannel.Result result) {
+        result.success(view.getRtmpAudioTimestamp());
+    }
+
+    /**
+     * 暂停/恢复播放器的预缓冲
+     */
+    private void setBufferingEnabled(MethodCall call, MethodChannel.Result result) {
+        boolean enabled = CommonUtil.getParam(call, result, "enabled");
+        view.setBufferingEnabled(enabled);
+        result.success(null);
+    }
+
+    /**
+     * 获取已经缓冲的长度
+     */
+    private void getHttpBufferSize(MethodCall call, MethodChannel.Result result) {
+        result.success(view.getHttpBufferSize().longValue());
+    }
+}
