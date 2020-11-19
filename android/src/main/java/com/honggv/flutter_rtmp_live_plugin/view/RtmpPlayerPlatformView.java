@@ -184,29 +184,29 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      * 在RTMP消息中获取视频时间戳
      */
     private void getRtmpVideoTimestamp(MethodCall call, MethodChannel.Result result) {
-        result.success(view.getRtmpVideoTimestamp());
+//        result.success(view.getRtmpVideoTimestamp());
     }
 
     /**
      * 在RTMP消息中获取音频时间戳
      */
     private void getRtmpAudioTimestamp(MethodCall call, MethodChannel.Result result) {
-        result.success(view.getRtmpAudioTimestamp());
+//        result.success(view.getRtmpAudioTimestamp());
     }
 
     /**
      * 暂停/恢复播放器的预缓冲
      */
     private void setBufferingEnabled(MethodCall call, MethodChannel.Result result) {
-        boolean enabled = CommonUtil.getParam(call, result, "enabled");
-        view.setBufferingEnabled(enabled);
-        result.success(null);
+//        boolean enabled = CommonUtil.getParam(call, result, "enabled");
+//        view.setBufferingEnabled(enabled);
+//        result.success(null);
     }
 
     /**
      * 获取已经缓冲的长度
      */
     private void getHttpBufferSize(MethodCall call, MethodChannel.Result result) {
-        result.success(view.getHttpBufferSize().longValue());
+//        result.success(view.getHttpBufferSize().longValue());
     }
 }

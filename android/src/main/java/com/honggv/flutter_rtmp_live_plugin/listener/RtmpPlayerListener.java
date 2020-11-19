@@ -4,11 +4,7 @@ package com.honggv.flutter_rtmp_live_plugin.listener;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
-import com.pili.pldroid.player.PLOnCompletionListener;
-import com.pili.pldroid.player.PLOnErrorListener;
-import com.pili.pldroid.player.PLOnInfoListener;
-import com.pili.pldroid.player.PLOnPreparedListener;
-import com.pili.pldroid.player.PLOnVideoSizeChangedListener;
+import com.pili.pldroid.player.PLMediaPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +15,7 @@ import com.honggv.flutter_rtmp_live_plugin.enums.PlayerCallBackNoticeEnum;
 /**
  * rtmp播放监听器
  */
-public class RtmpPlayerListener implements PLOnPreparedListener, PLOnInfoListener, PLOnCompletionListener, PLOnVideoSizeChangedListener, PLOnErrorListener {
+public class RtmpPlayerListener implements PLMediaPlayer.OnPreparedListener, PLMediaPlayer.OnCompletionListener, PLMediaPlayer.OnErrorListener, PLMediaPlayer.OnInfoListener, PLMediaPlayer.OnBufferingUpdateListener, PLMediaPlayer.OnVideoSizeChangedListener, PLMediaPlayer.OnSeekCompleteListener {
     /**
      * 日志标签
      */
@@ -58,44 +54,40 @@ public class RtmpPlayerListener implements PLOnPreparedListener, PLOnInfoListene
         channel.invokeMethod(LISTENER_FUNC_NAME, JSON.toJSONString(resultParams));
     }
 
-    /**
-     * 播放结束
-     */
     @Override
-    public void onCompletion() {
+    public void onBufferingUpdate(PLMediaPlayer plMediaPlayer, int i) {
+
+    }
+
+    @Override
+    public void onCompletion(PLMediaPlayer plMediaPlayer) {
         invokeListener(PlayerCallBackNoticeEnum.Completion, null);
     }
 
-    /**
-     * 错误事件
-     */
     @Override
-    public boolean onError(int i) {
+    public boolean onError(PLMediaPlayer plMediaPlayer, int i) {
         invokeListener(PlayerCallBackNoticeEnum.Error, i);
         return false;
     }
 
-    /**
-     * 状态信息
-     */
     @Override
-    public void onInfo(int i, int i1) {
+    public boolean onInfo(PLMediaPlayer plMediaPlayer, int i, int i1) {
         invokeListener(PlayerCallBackNoticeEnum.Info, i);
+        return false;
     }
 
-    /**
-     * 准备好
-     */
     @Override
-    public void onPrepared(int i) {
-        invokeListener(PlayerCallBackNoticeEnum.Prepared, i);
+    public void onPrepared(PLMediaPlayer plMediaPlayer) {
+        invokeListener(PlayerCallBackNoticeEnum.Prepared, null);
     }
 
-    /**
-     * 播放的视频流的尺寸信息，在 SDK 解析出视频的尺寸信息后，会触发该回调，开发者可以在该回调中调整 UI 的视图尺寸
-     */
     @Override
-    public void onVideoSizeChanged(int i, int i1) {
+    public void onSeekComplete(PLMediaPlayer plMediaPlayer) {
+
+    }
+
+    @Override
+    public void onVideoSizeChanged(PLMediaPlayer plMediaPlayer, int i, int i1, int i2, int i3) {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("width", i);
         params.put("height", i1);

@@ -47,7 +47,7 @@ class RtmpPlayerViewController {
     bool
         sameSource : false, // 是否是同种格式播放，同格式切换打开更快 @waring 当sameSource 为 YES 时，视频格式与切换前视频格式不同时，会导致视频打开失败【该属性仅IOS有效】
   }) async {
-    print('===================================');
+    print('==================================='+url);
     return await _channel.invokeMethod('start', {
       "url": url,
       "sameSource": sameSource,

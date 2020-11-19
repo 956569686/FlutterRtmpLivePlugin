@@ -313,6 +313,12 @@ class PushPageState extends State<PushPage> {
                   ),
                   onViewCreated: onViewCreated,
                 ),
+//                Container(
+//                  width: 130,
+//                  child: RtmpPlayerView(
+//                    onViewCreated: onViewCreated,
+//                  ),
+//                ),
                 Container(
                   child: ListView(
                     padding: EdgeInsets.all(0),

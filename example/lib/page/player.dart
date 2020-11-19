@@ -194,7 +194,7 @@ class PlayerPageState extends State<PlayerPage> {
   onStart() async {
     await controller.start(
       url:
-          "rtmp://xl.rtmp.honggv.cn:19235/6b88f93f-2e34-49ec-a94f-bf6ee75cc95f/c40221d3-0d36-42ab-a1ba-a90216745926",
+          "rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613&Session=e1abf498-91c1-11ea-a7a5-588a5a338613",
     );
   }
 
