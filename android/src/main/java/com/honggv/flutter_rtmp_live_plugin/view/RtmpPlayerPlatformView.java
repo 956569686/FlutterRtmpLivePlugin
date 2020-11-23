@@ -2,13 +2,24 @@ package com.honggv.flutter_rtmp_live_plugin.view;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.honggv.flutter_rtmp_live_plugin.listener.RtmpPlayerListener;
-import com.honggv.flutter_rtmp_live_plugin.util.CommonUtil;
-import com.honggv.flutter_rtmp_live_plugin.widget.MediaController;
-import com.pili.pldroid.player.widget.PLVideoView;
+import com.alibaba.fastjson.JSON;
+import com.honggv.flutter_rtmp_live_plugin.enums.PlayerCallBackNoticeEnum;
+import com.honggv.flutter_rtmp_live_plugin.widget.CameraPreviewFrameView;
+import com.ksyun.media.player.IMediaPlayer;
+import com.ksyun.media.player.KSYMediaPlayer;
+import com.ksyun.media.player.KSYTextureView;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import io.flutter.plugin.common.BinaryMessenger;
@@ -46,7 +57,20 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
     /**
      * 播放器
      */
-    private PLVideoView view;
+    private KSYTextureView view;
+
+    private int mVideoWidth = 0;
+    private int mVideoHeight = 0;
+
+    /**
+     * 通信管道
+     */
+    private MethodChannel channel;
+
+    /**
+     * 监听器回调的方法名
+     */
+    private final static String LISTENER_FUNC_NAME = "onPlayerListener";
 
     /**
      * 初始化视图工厂，注册视图时调用
@@ -128,28 +152,176 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      */
     private void init(Map<String, Object> params, MethodChannel methodChannel) {
         // 初始化视图
-        view = new PLVideoView(context);
-        view.setMediaController(new MediaController(context));
-        if (params.get("url") != null) {
-            view.setVideoPath(params.get("url").toString());
-        }
+        channel = methodChannel;
 
-        // 监听器
-        RtmpPlayerListener listener = new RtmpPlayerListener(context, methodChannel);
-        view.setOnPreparedListener(listener);
-        view.setOnInfoListener(listener);
-        view.setOnCompletionListener(listener);
-        view.setOnVideoSizeChangedListener(listener);
-        view.setOnErrorListener(listener);
+        view = new KSYTextureView(context);
+        view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+
+
+        view.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
+        view.setOnCompletionListener(mOnCompletionListener);
+        view.setOnPreparedListener(mOnPreparedListener);
+        view.setOnInfoListener(mOnInfoListener);
+        view.setOnVideoSizeChangedListener(mOnVideoSizeChangeListener);
+        view.setOnErrorListener(mOnErrorListener);
+        view.setOnSeekCompleteListener(mOnSeekCompletedListener);
+        view.setOnMessageListener(mOnMessageListener);
+        view.setTimeout(5, 30);
+        view.setBufferTimeMax(2);
+        view.setBufferSize(15);
+
+        Log.e("=============","初始化");
     }
+
+
+    private IMediaPlayer.OnPreparedListener mOnPreparedListener = new IMediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(IMediaPlayer mp) {
+            Log.d("VideoPlayer", "OnPrepared");
+            mVideoWidth = view.getVideoWidth();
+            mVideoHeight = view.getVideoHeight();
+
+            // Set Video Scaling Mode
+            view.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+
+            //start player
+            view.start();
+
+        }
+    };
+
+    private IMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener = new IMediaPlayer.OnBufferingUpdateListener() {
+        @Override
+        public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+            long duration = view.getDuration();
+            long progress = duration * percent / 100;
+        }
+    };
+
+    private IMediaPlayer.OnVideoSizeChangedListener mOnVideoSizeChangeListener = new IMediaPlayer.OnVideoSizeChangedListener() {
+        @Override
+        public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
+            if (mVideoWidth > 0 && mVideoHeight > 0) {
+                if (width != mVideoWidth || height != mVideoHeight) {
+                    mVideoWidth = mp.getVideoWidth();
+                    mVideoHeight = mp.getVideoHeight();
+
+                    if (view != null)
+                        view.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+                }
+            }
+        }
+    };
+
+    private IMediaPlayer.OnSeekCompleteListener mOnSeekCompletedListener = new IMediaPlayer.OnSeekCompleteListener() {
+        @Override
+        public void onSeekComplete(IMediaPlayer mp) {
+            Log.e(TAG, "onSeekComplete...............");
+        }
+    };
+
+    private IMediaPlayer.OnCompletionListener mOnCompletionListener = new IMediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(IMediaPlayer mp) {
+
+            videoPlayEnd();
+        }
+    };
+
+    private IMediaPlayer.OnErrorListener mOnErrorListener = new IMediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(IMediaPlayer mp, int what, int extra) {
+            switch (what) {
+                //case KSYVideoView.MEDIA_ERROR_UNKNOWN:
+                // Log.e(TAG, "OnErrorListener, Error Unknown:" + what + ",extra:" + extra);
+                //  break;
+                default:
+                    Log.e(TAG, "OnErrorListener, Error:" + what + ",extra:" + extra);
+            }
+
+            invokeListener(PlayerCallBackNoticeEnum.Error, what);
+
+//            videoPlayEnd();
+
+            return false;
+        }
+    };
+
+    /**
+     * 调用监听器
+     *
+     * @param type   类型
+     * @param params 参数
+     */
+    private void invokeListener(final PlayerCallBackNoticeEnum type, final Object params) {
+        Map<String, Object> resultParams = new HashMap<>(2, 1);
+        resultParams.put("type", type);
+        resultParams.put("params", params == null ? null : JSON.toJSONString(params));
+        channel.invokeMethod(LISTENER_FUNC_NAME, JSON.toJSONString(resultParams));
+    }
+
+    public IMediaPlayer.OnInfoListener mOnInfoListener = new IMediaPlayer.OnInfoListener() {
+        @Override
+        public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
+            switch (i) {
+                case KSYMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    Log.d(TAG, "Buffering Start.");
+                    break;
+                case KSYMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    Log.d(TAG, "Buffering End.");
+                    break;
+                case KSYMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+//                    Toast.makeText(mContext, "Audio Rendering Start", Toast.LENGTH_SHORT).show();
+                    break;
+                case KSYMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+//                    Toast.makeText(mContext, "Video Rendering Start", Toast.LENGTH_SHORT).show();
+                    break;
+                case KSYMediaPlayer.MEDIA_INFO_RELOADED:
+//                    Toast.makeText(mContext, "Succeed to reload video.", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Succeed to mPlayerReload video.");
+                    return false;
+            }
+            invokeListener(PlayerCallBackNoticeEnum.Info, i);
+            return false;
+        }
+    };
+
+    private IMediaPlayer.OnMessageListener mOnMessageListener = new IMediaPlayer.OnMessageListener() {
+        @Override
+        public void onMessage(IMediaPlayer iMediaPlayer, Bundle bundle) {
+            Log.e(TAG, "name:" + bundle.toString());
+        }
+    };
+
+    private void videoPlayEnd() {
+        if (view != null) {
+            view.release();
+            view = null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 设置画面预览模式
      */
     private void setDisplayAspectRatio(MethodCall call, MethodChannel.Result result) {
-        int mode = CommonUtil.getParam(call, result, "mode");
-        view.setDisplayAspectRatio(mode);
-        result.success(null);
+//        int mode = CommonUtil.getParam(call, result, "mode");
+//        view.setDisplayAspectRatio(mode);
+//        result.success(null);
     }
 
     /**
@@ -157,9 +329,22 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      */
     private void start(MethodCall call, MethodChannel.Result result) {
         String url = call.argument("url");
-        if (url != null) {
-            view.setVideoPath(url);
+        try {
+            view.setDataSource(url);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Log.e("=============","调用开始"+url);
+
+        if (url != null) {
+            try {
+                view.setDataSource(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            view.prepareAsync();
+        }
+
         view.start();
         result.success(null);
     }
@@ -176,7 +361,11 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      * 停止播放
      */
     private void stopPlayback(MethodCall call, MethodChannel.Result result) {
-        view.stopPlayback();
+        if (view != null) {
+            view.stop();
+            view.release();
+            view = null;
+        }
         result.success(null);
     }
 

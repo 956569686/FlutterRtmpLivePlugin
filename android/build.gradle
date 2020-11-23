@@ -44,6 +44,4 @@ dependencies {
     // json序列化
     implementation 'com.alibaba:fastjson:1.2.55'
     implementation files('libs/ksylive.jar')
-    // 七牛云播放SDK
-    implementation files('libs\\pldroid-player-1.5.1.jar')
 }
