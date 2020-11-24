@@ -54,6 +54,19 @@ class RtmpPlayerViewController {
     });
   }
 
+  /// 重连
+  Future<void> reStart({
+    String url, // URL，如果该属性不为null，则会执行切换操作
+    bool
+    sameSource : false, // 是否是同种格式播放，同格式切换打开更快 @waring 当sameSource 为 YES 时，视频格式与切换前视频格式不同时，会导致视频打开失败【该属性仅IOS有效】
+  }) async {
+    print('==================================='+url);
+    return await _channel.invokeMethod('reStart', {
+      "url": url,
+      "sameSource": sameSource,
+    });
+  }
+
   /// 暂停
   Future<void> pause() async {
     return await _channel.invokeMethod('pause');

@@ -58,24 +58,28 @@ class PlayerPageState extends State<PlayerPage> {
   }
 
   /// 监听器
-  onListener(type, params) {
+  onListener(type, params) async{
     // 错误
     if (type == RtmpPlayerListenerTypeEnum.Error) {
-      this.setState(() => error = params.toString());
+      if(controller != null){
+        await controller.reStart(url:'rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613&Session=e1abf498-91c1-11ea-a7a5-588a5a338613');//
+      }
+      print('播放器异常============重连播放============='+type.toString());
+//      this.setState(() => error = params.toString());
     }
 
     // 状态改变
     if (type == RtmpPlayerListenerTypeEnum.Info) {
-      this.setState(() => status = params);
+//      this.setState(() => status = params);
     }
 
     // 大小改变
     if (type == RtmpPlayerListenerTypeEnum.VideoSizeChanged) {
-      Map<String, dynamic> paramsObj = jsonDecode(params);
-      this.setState(() {
-        width = paramsObj["width"];
-        height = paramsObj["height"];
-      });
+//      Map<String, dynamic> paramsObj = jsonDecode(params);
+//      this.setState(() {
+//        width = paramsObj["width"];
+//        height = paramsObj["height"];
+//      });
     }
   }
 
@@ -194,7 +198,7 @@ class PlayerPageState extends State<PlayerPage> {
   onStart() async {
     await controller.start(
       url:
-          "rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613&Session=e1abf498-91c1-11ea-a7a5-588a5a338613",
+          "rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613",
     );
   }
 

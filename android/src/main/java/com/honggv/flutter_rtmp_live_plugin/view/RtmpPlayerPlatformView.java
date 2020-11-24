@@ -99,6 +99,9 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
             case "start":
                 this.start(call, result);
                 break;
+            case "reStart":
+                this.reStart(call, result);
+                break;
             case "pause":
                 this.pause(call, result);
                 break;
@@ -166,7 +169,7 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
         view.setOnErrorListener(mOnErrorListener);
         view.setOnSeekCompleteListener(mOnSeekCompletedListener);
         view.setOnMessageListener(mOnMessageListener);
-        view.setTimeout(5, 30);
+//        view.setTimeout(5, 30);
         view.setBufferTimeMax(2);
         view.setBufferSize(15);
 
@@ -224,7 +227,7 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
         @Override
         public void onCompletion(IMediaPlayer mp) {
 
-            videoPlayEnd();
+//            videoPlayEnd();
         }
     };
 
@@ -239,9 +242,9 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
                     Log.e(TAG, "OnErrorListener, Error:" + what + ",extra:" + extra);
             }
 
-            invokeListener(PlayerCallBackNoticeEnum.Error, what);
-
 //            videoPlayEnd();
+
+            invokeListener(PlayerCallBackNoticeEnum.Error, what);
 
             return false;
         }
@@ -329,25 +332,46 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      */
     private void start(MethodCall call, MethodChannel.Result result) {
         String url = call.argument("url");
-        try {
-            view.setDataSource(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Log.e("=============","调用开始"+url);
 
         if (url != null) {
             try {
+                Log.e("======111111=======","");
                 view.setDataSource(url);
             } catch (IOException e) {
+                Log.e("======222222=======","");
                 e.printStackTrace();
             }
+            Log.e("======3333333=======","");
             view.prepareAsync();
         }
 
         view.start();
         result.success(null);
     }
+
+    //重连
+    private void reStart(MethodCall call, MethodChannel.Result result) {
+        String url = call.argument("url");
+        Log.e("=============","调用开始"+url);
+
+        if (url != null) {
+//            try {
+//                Log.e("======111111=======","");
+//                view.setDataSource(url);
+//            } catch (IOException e) {
+//                Log.e("======222222=======","");
+//                e.printStackTrace();
+//            }
+//            Log.e("======3333333=======","");
+//            view.prepareAsync();
+
+
+            view.reload(url,true);
+        }
+        result.success(null);
+    }
+
 
     /**
      * 暂停
