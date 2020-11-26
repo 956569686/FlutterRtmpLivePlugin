@@ -280,11 +280,11 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         // orientation
 
         // encode method ENCODE_METHOD_HARDWARE
-        if (isHw264EncoderSupported()) {
-            mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
-        } else {
+//        if (isHw264EncoderSupported()) {
+//            mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
+//        } else {
             mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
-        }
+//        }
 //        mConfig.mEncodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE_COMPAT;
 
         mConfig.mAutoStart = true;
