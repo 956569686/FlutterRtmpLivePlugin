@@ -14,7 +14,7 @@ class PlayerPage extends StatefulWidget {
   State<StatefulWidget> createState() => PlayerPageState();
 }
 
-class PlayerPageState extends State<PlayerPage> {
+class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver{
   /// 播放控制器
   RtmpPlayerViewController controller;
 
@@ -39,6 +39,22 @@ class PlayerPageState extends State<PlayerPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // 注册监听器
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      if(controller != null){
+//        controller.reStart(url:'rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e19ec583-91c1-11ea-a7a5-588a5a338613&Session=e19ec583-91c1-11ea-a7a5-588a5a338613');
+        controller.runInForeground();
+      }
+    } else if (state == AppLifecycleState.paused) {
+      if(controller != null){
+        controller.runInBackground();
+//        controller.pause();
+      }
+    }
   }
 
   @override
@@ -47,6 +63,7 @@ class PlayerPageState extends State<PlayerPage> {
     if (controller != null) {
       controller.removeListener(onListener);
     }
+    WidgetsBinding.instance.removeObserver(this); // 移除监听器
   }
 
   /// 控制器初始化
@@ -62,7 +79,7 @@ class PlayerPageState extends State<PlayerPage> {
     // 错误
     if (type == RtmpPlayerListenerTypeEnum.Error) {
       if(controller != null){
-        await controller.reStart(url:'rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613&Session=e1abf498-91c1-11ea-a7a5-588a5a338613');//
+        await controller.reStart(url:'rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e19ec583-91c1-11ea-a7a5-588a5a338613&Session=e19ec583-91c1-11ea-a7a5-588a5a338613');//
       }
       print('播放器异常============重连播放============='+type.toString());
 //      this.setState(() => error = params.toString());
@@ -198,7 +215,7 @@ class PlayerPageState extends State<PlayerPage> {
   onStart() async {
     await controller.start(
       url:
-          "rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e1abf498-91c1-11ea-a7a5-588a5a338613",
+          "rtsp://chengdu.jianyang.stream.xl02.cn:557/HongTranSvr?DevId=e19ec583-91c1-11ea-a7a5-588a5a338613&Session=e19ec583-91c1-11ea-a7a5-588a5a338613",
     );
   }
 

@@ -120,10 +120,18 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
             case "getHttpBufferSize":
                 this.getHttpBufferSize(call, result);
                 break;
+            case "runInForeground":
+                this.runInForeground(call, result);
+                break;
+            case "runInBackground":
+                this.runInBackground(call, result);
+                break;
             default:
                 result.notImplemented();
         }
     }
+
+
 
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
@@ -172,7 +180,6 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
 //        view.setTimeout(5, 30);
         view.setBufferTimeMax(2);
         view.setBufferSize(15);
-
         Log.e("=============","初始化");
     }
 
@@ -378,6 +385,22 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      */
     private void pause(MethodCall call, MethodChannel.Result result) {
         view.pause();
+        result.success(null);
+    }
+
+    /**
+     * runInForeground
+     */
+    private void runInForeground(MethodCall call, MethodChannel.Result result) {
+        view.runInForeground();
+        result.success(null);
+    }
+
+    /**
+     * runInBackground
+     */
+    private void runInBackground(MethodCall call, MethodChannel.Result result) {
+        view.runInBackground(true);
         result.success(null);
     }
 

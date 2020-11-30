@@ -67,6 +67,21 @@ class RtmpPlayerViewController {
     });
   }
 
+  /**
+   * runInForeground
+   */
+  Future<void> runInForeground() async{
+    return await _channel.invokeMethod('runInForeground');
+  }
+
+  /**
+   * runInBackground
+   */
+  Future<void> runInBackground() async{
+    return await _channel.invokeMethod('runInBackground');
+  }
+
+
   /// 暂停
   Future<void> pause() async {
     return await _channel.invokeMethod('pause');
