@@ -166,8 +166,8 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
         channel = methodChannel;
 
         view = new KSYTextureView(context);
-        view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
 
+        view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
 
         view.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
         view.setOnCompletionListener(mOnCompletionListener);
@@ -393,6 +393,7 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      */
     private void runInForeground(MethodCall call, MethodChannel.Result result) {
         view.runInForeground();
+
         result.success(null);
     }
 
@@ -400,6 +401,7 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
      * runInBackground
      */
     private void runInBackground(MethodCall call, MethodChannel.Result result) {
+        view.setComeBackFromShare(true);
         view.runInBackground(true);
         result.success(null);
     }
