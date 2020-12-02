@@ -270,12 +270,9 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         mConfig.mVideoKBitrate = 800;
         mConfig.mAudioKBitrate = 48;
         mConfig.mUrl = url;
-        mConfig.mFrameRate = 15;
-        mConfig.mVideoKBitrate = 800;
-        mConfig.mAudioKBitrate = 48;
         // video frame rate
         mConfig.mCameraFacing = CameraCapture.FACING_FRONT;
-        mConfig.mTargetResolution = StreamerConstants.VIDEO_RESOLUTION_480P;
+        mConfig.mTargetResolution = StreamerConstants.VIDEO_RESOLUTION_720P;
         mConfig.mOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         // orientation
 
