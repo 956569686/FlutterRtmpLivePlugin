@@ -1,7 +1,7 @@
 name: flutter_rtmp_live_plugin
 description: Flutter 直播rtmp插件
 version: 0.0.1
-author:
+author: limeng
 homepage: https://github.com/956569686/FlutterRtmpLivePlugin
 
 environment:
