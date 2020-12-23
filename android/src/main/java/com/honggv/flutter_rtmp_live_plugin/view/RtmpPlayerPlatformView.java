@@ -108,8 +108,14 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
             case "stopPlayback":
                 this.stopPlayback(call, result);
                 break;
-            case "getRtmpVideoTimestamp":
-                this.getRtmpVideoTimestamp(call, result);
+            case "setRotateDegree90":
+                this.setRotateDegree90(call, result);
+                break;
+            case "setRotateDegree180":
+                this.setRotateDegree180(call, result);
+                break;
+            case "setRotateDegree270":
+                this.setRotateDegree270(call, result);
                 break;
             case "getRtmpAudioTimestamp":
                 this.getRtmpAudioTimestamp(call, result);
@@ -417,6 +423,37 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
         }
         result.success(null);
     }
+
+    /**
+     * 设置逆时针旋转角度
+     */
+    private void setRotateDegree90(MethodCall call, MethodChannel.Result result) {
+        if (view != null) {
+            view.setRotateDegree(90);
+        }
+        result.success(null);
+    }
+
+    /**
+     * 设置逆时针旋转角度
+     */
+    private void setRotateDegree180(MethodCall call, MethodChannel.Result result) {
+        if (view != null) {
+            view.setRotateDegree(180);
+        }
+        result.success(null);
+    }
+
+    /**
+     * 设置逆时针旋转角度
+     */
+    private void setRotateDegree270(MethodCall call, MethodChannel.Result result) {
+        if (view != null) {
+            view.setRotateDegree(270);
+        }
+        result.success(null);
+    }
+
 
     /**
      * 在RTMP消息中获取视频时间戳
