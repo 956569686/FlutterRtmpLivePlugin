@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rtmp_live_plugin_example/page/DraggableDemo.dart';
 import 'package:flutter_rtmp_live_plugin_example/page/player.dart';
 import 'package:flutter_rtmp_live_plugin_example/page/push.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -22,6 +24,15 @@ class HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       new MaterialPageRoute(builder: (context) => new PlayerPage()),
+    );
+  }
+
+  /// 拖动界面
+  onDragDemo() {
+    // TODO 摄像头和麦克风权限请求
+    Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => new DraggableDemo()),
     );
   }
 
@@ -57,6 +68,10 @@ class HomePageState extends State<HomePage> {
             RaisedButton(
               onPressed: onPlayer,
               child: Text("开始播放"),
+            ),
+            RaisedButton(
+              onPressed: onDragDemo,
+              child: Text("测试拖动"),
             ),
           ],
         ),

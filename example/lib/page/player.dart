@@ -72,6 +72,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver{
     controller.setDisplayAspectRatio(
         mode: RtmpPlayerDisplayAspectRatioEnum.ASPECT_RATIO_PAVED_PARENT);
     controller.addListener(onListener);
+//    onStart();
   }
 
   /// 监听器
@@ -257,89 +258,101 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-              children: <Widget>[
-                RtmpPlayerView(
-                  onViewCreated: onViewCreated,
-                ),
-                Align(
-                  alignment: new FractionalOffset(0.5, 0.95),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      border: Border.all(width: 1, color: Colors.red),
-                    ),
-                    child: Text(
-                      "上滑查看功能栏",
-                      style: TextStyle(color: Colors.red, fontSize: 10),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      body: Container(
+        color: Colors.tealAccent,
+        child: Padding(
+          padding: EdgeInsets.all(4),
+          child: RtmpPlayerView(
+            onViewCreated: onViewCreated,
           ),
-          Container(
-            child: ListView(
-              padding: EdgeInsets.all(0),
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        error != null ? "发生错误，错误信息为:${getErrorText()}" : "",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      Text(hint ?? ""),
-                      Text("当前状态:${getStatusText()},视频高宽:$height,$width"),
-                      Wrap(
-                        children: <Widget>[
-                          RaisedButton(
-                            onPressed: onStart,
-                            child: Text("开始播放"),
-                          ),
-                          RaisedButton(
-                            onPressed: onPause,
-                            child: Text("暂停"),
-                          ),
-                          RaisedButton(
-                            onPressed: onStopPlayback,
-                            child: Text("停止"),
-                          ),
-                          RaisedButton(
-                            onPressed: onGetRtmpVideoTimestamp,
-                            child: Text("获得视频时间戳"),
-                          ),
-                          RaisedButton(
-                            onPressed: onGetRtmpVideoTimestamp,
-                            child: Text("获得音频时间戳"),
-                          ),
-                          RaisedButton(
-                            onPressed: onSetBufferingEnabled,
-                            child: Text("启用/关闭 播放器预缓存"),
-                          ),
-                          RaisedButton(
-                            onPressed: onGetHttpBufferSize,
-                            child: Text("获得已缓冲长度"),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
+
+//    return Scaffold(
+//      body: Stack(
+//        children: <Widget>[
+//          Container(
+//            height: MediaQuery.of(context).size.height,
+//            child: Stack(
+//              children: <Widget>[
+//                RtmpPlayerView(
+//                  onViewCreated: onViewCreated,
+//                ),
+//                Align(
+//                  alignment: new FractionalOffset(0.5, 0.95),
+//                  child: Container(
+//                    padding: EdgeInsets.all(5),
+//                    decoration: BoxDecoration(
+//                      borderRadius: BorderRadius.all(Radius.circular(20)),
+//                      border: Border.all(width: 1, color: Colors.red),
+//                    ),
+//                    child: Text(
+//                      "上滑查看功能栏",
+//                      style: TextStyle(color: Colors.red, fontSize: 10),
+//                    ),
+//                  ),
+//                ),
+//              ],
+//            ),
+//          ),
+//          Container(
+//            child: ListView(
+//              padding: EdgeInsets.all(0),
+//              children: <Widget>[
+//                Container(
+//                  height: MediaQuery.of(context).size.height,
+//                ),
+//                Container(
+//                  color: Colors.white,
+//                  child: Column(
+//                    children: <Widget>[
+//                      Text(
+//                        error != null ? "发生错误，错误信息为:${getErrorText()}" : "",
+//                        style: TextStyle(color: Colors.red),
+//                      ),
+//                      Text(hint ?? ""),
+//                      Text("当前状态:${getStatusText()},视频高宽:$height,$width"),
+//                      Wrap(
+//                        children: <Widget>[
+//                          RaisedButton(
+//                            onPressed: onStart,
+//                            child: Text("开始播放"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onPause,
+//                            child: Text("暂停"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onStopPlayback,
+//                            child: Text("停止"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onGetRtmpVideoTimestamp,
+//                            child: Text("获得视频时间戳"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onGetRtmpVideoTimestamp,
+//                            child: Text("获得音频时间戳"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onSetBufferingEnabled,
+//                            child: Text("启用/关闭 播放器预缓存"),
+//                          ),
+//                          RaisedButton(
+//                            onPressed: onGetHttpBufferSize,
+//                            child: Text("获得已缓冲长度"),
+//                          ),
+//                        ],
+//                      ),
+//                    ],
+//                  ),
+//                ),
+//              ],
+//            ),
+//          ),
+//        ],
+//      ),
+//    );
   }
 }

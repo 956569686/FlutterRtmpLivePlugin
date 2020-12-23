@@ -37,6 +37,8 @@ import com.honggv.flutter_rtmp_live_plugin.widget.CameraPreviewFrameView;
 import com.ksyun.media.streamer.util.device.DeviceInfo;
 import com.ksyun.media.streamer.util.device.DeviceInfoTools;
 
+import static com.ksyun.media.streamer.kit.StreamerConstants.AUDIO_NS_LEVEL_2;
+
 /**
  * 推流视图
  */
@@ -201,6 +203,11 @@ public class RtmpPushPlatformView extends PlatformViewFactory implements Platfor
         mStreamer.setUrl(streamingProfile.getPublishUrl());
 
         mStreamer.setVideoCodecId(AVConst.CODEC_ID_AVC);
+
+        //开启降噪功能
+        mStreamer.setEnableAudioNS(true);
+        //设置降噪等级
+        mStreamer.setAudioNSLevel(AUDIO_NS_LEVEL_2);
 
         // 设置推流分辨率
         mStreamer.setPreviewResolution(mConfig.mTargetResolution);
