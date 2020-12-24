@@ -84,22 +84,8 @@ class RtmpPlayerViewController {
   /**
    * setRotateDegree90
    */
-  Future<void> setRotateDegree90() async{
-    return await _channel.invokeMethod('setRotateDegree90');
-  }
-
-  /**
-   * setRotateDegree180
-   */
-  Future<void> setRotateDegree180() async{
-    return await _channel.invokeMethod('setRotateDegree180');
-  }
-
-  /**
-   * setRotateDegree270
-   */
-  Future<void> setRotateDegree270() async{
-    return await _channel.invokeMethod('setRotateDegree270');
+  Future<void> setRotateDegree() async{
+    return await _channel.invokeMethod('setRotateDegree');
   }
 
   /// 暂停

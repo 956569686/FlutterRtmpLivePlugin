@@ -62,6 +62,8 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
     private int mVideoWidth = 0;
     private int mVideoHeight = 0;
 
+    private int rotateNum = 0;
+
     /**
      * 通信管道
      */
@@ -108,14 +110,8 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
             case "stopPlayback":
                 this.stopPlayback(call, result);
                 break;
-            case "setRotateDegree90":
-                this.setRotateDegree90(call, result);
-                break;
-            case "setRotateDegree180":
-                this.setRotateDegree180(call, result);
-                break;
-            case "setRotateDegree270":
-                this.setRotateDegree270(call, result);
+            case "setRotateDegree":
+                this.setRotateDegree(call, result);
                 break;
             case "getRtmpAudioTimestamp":
                 this.getRtmpAudioTimestamp(call, result);
@@ -427,29 +423,10 @@ public class RtmpPlayerPlatformView extends PlatformViewFactory implements Platf
     /**
      * 设置逆时针旋转角度
      */
-    private void setRotateDegree90(MethodCall call, MethodChannel.Result result) {
+    private void setRotateDegree(MethodCall call, MethodChannel.Result result) {
         if (view != null) {
-            view.setRotateDegree(90);
-        }
-        result.success(null);
-    }
-
-    /**
-     * 设置逆时针旋转角度
-     */
-    private void setRotateDegree180(MethodCall call, MethodChannel.Result result) {
-        if (view != null) {
-            view.setRotateDegree(180);
-        }
-        result.success(null);
-    }
-
-    /**
-     * 设置逆时针旋转角度
-     */
-    private void setRotateDegree270(MethodCall call, MethodChannel.Result result) {
-        if (view != null) {
-            view.setRotateDegree(270);
+            view.setRotateDegree((rotateNum + 90) % 360);
+            rotateNum += 90;
         }
         result.success(null);
     }
